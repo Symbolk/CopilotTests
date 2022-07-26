@@ -2,6 +2,24 @@
 
 Testing Copilot at generating code, side by side with tests.
 
+# Instructions
+
+1. Clone repo 
+2. Create dirs named like 'self_contained', for each level
+3. In each dir, create file named '1.py', then we get 'self_contained/1.py'
+4. Use Copilot to generate tests by prompting it with:
+
+```python
+def test_xxx(): # xxx should be the tested function name
+  """
+  Check the corretness with xxx
+  """
+  
+```
+5. Run the tests and commit passed ones
+
+Cherrs! :hugs:
+
 # Tasks
 
 ## self_contained
