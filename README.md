@@ -6,7 +6,7 @@ Testing Copilot at generating code, side by side with tests.
 
 1. Clone repo 
 2. Create dirs named like 'self_contained', for each level
-3. In each dir, create file named '1.py', then we get 'self_contained/1.py'
+3. In each dir, create file named like '1.py', then we get 'self_contained/1.py'
 4. Use Copilot to generate tests by prompting it with:
 
 ```python
@@ -16,7 +16,8 @@ def test_xxx(): # xxx should be the tested function name
   """
   
 ```
-5. Run the tests and commit passed ones
+5. Run the tests and save the passed ones
+6. Commit and create pull requests
 
 Cherrs! :hugs:
 
