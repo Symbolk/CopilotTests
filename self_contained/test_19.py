@@ -39,3 +39,6 @@ def test_was_processed():
     """
     assert was_processed(set(), "A", True) == False
     assert was_processed(set(), "A", False) == False
+    assert was_processed(set(), "A", True) == False
+    assert was_processed(set("A"), "A", False) == True
+    assert was_processed(set("A"), "A", True) == True

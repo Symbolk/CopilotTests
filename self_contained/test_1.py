@@ -13,7 +13,10 @@ def test_strip_root():
     """
     Check the corretness of strip_root
     """
-    assert strip_root("/home/user/file.txt", "/home/user") == "file.txt"
-    assert strip_root("/home/user/file.txt", "/home/user/") == "file.txt"
+    assert strip_root("/home/user/test", "/home/user") == "test"
+    assert strip_root("/home/user/test/", "/home/user") == "test"
+    assert strip_root("/home/user/test/", "/home/user/") == "test"
+    assert strip_root("/home/user/test/", "/home/user/test") == '.'
+    assert strip_root("/home/user/test/", "/home/user/test/") == '.'
     
     

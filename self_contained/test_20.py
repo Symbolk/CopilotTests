@@ -46,6 +46,9 @@ def test_size_to_bytes():
     """
     Check the corretness of size_to_bytes
     """
-    assert  size_to_bytes("500") == 500
+    assert size_to_bytes("500") == 500
     assert size_to_bytes("1K") == 1000
     assert size_to_bytes("1M") == 1000**2
+    assert size_to_bytes("1G") == 1000**3
+    assert size_to_bytes("1T") == 1000**4
+    assert size_to_bytes("1P") == 1000**5

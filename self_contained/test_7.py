@@ -20,5 +20,10 @@ def test_string_to_int():
     Check the corretness of string_to_int
     """
     assert string_to_int("b", ["a", "b", "c"]) == 1
+    assert string_to_int("c", ["a", "b", "c"]) == 2
+    assert string_to_int("aab", ["a", "b", "c"]) == 1
+    assert string_to_int("aaab", ["a", "b", "c"]) == 1
+    assert string_to_int("aaaab", ["a", "b", "c"]) == 1
+    assert string_to_int("aaaaab", ["a", "b", "c"]) == 1
 
 

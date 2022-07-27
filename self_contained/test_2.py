@@ -8,3 +8,6 @@ def test_replace_dots():
     Check the corretness of replace_dots
     """
     assert  replace_dots("test.txt", ".") == "test.txt"
+    assert replace_dots("test.txt", " ") == "test txt"
+    assert replace_dots("test.txt", "") == "testtxt"
+    assert replace_dots("test.txt", ".") == "test.txt"

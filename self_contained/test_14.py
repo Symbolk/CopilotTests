@@ -34,6 +34,7 @@ def test__dictsum():
     Check the corretness of _dictsum
     """
     assert  _dictsum([{'a': 1, 'b': 2}, {'a': 5, 'b': 0}]) == {'a': 6, 'b': 2}
-    assert _dictsum([{'a': 1, 'b': 2}, {'a': 5, 'b': 0}]) == {'a': 6, 'b': 2}
-    assert _dictsum([{'a': 1, 'b': 2}, {'a': 5, 'b': 0}]) == {'a': 6, 'b': 2}
-    assert _dictsum([{'a': 1, 'b': 2}, {'a': 5, 'b': 0}]) == {'a': 6, 'b': 2}
+    assert _dictsum([{'a': 1, 'b': 2}, {'a': 5, 'b': 0}, {'a': 1, 'b': 2}]) == {'a': 7, 'b': 4}
+    assert _dictsum([{'a': 1, 'b': 2}, {'a': 5, 'b': 0}, {'a': 1, 'b': 2}, {'a': 1, 'b': 2}]) == {'a': 8, 'b': 6}
+    assert _dictsum([{'a': 1, 'b': 2}, {'a': 5, 'b': 0}, {'a': 1, 'b': 2}, {'a': 1, 'b': 2}, {'a': 1, 'b': 2}]) == {'a': 9, 'b': 8}
+    assert _dictsum([{'a': 1, 'b': 2}, {'a': 5, 'b': 0}, {'a': 1, 'b': 2}, {'a': 1, 'b': 2}, {'a': 1, 'b': 2}, {'a': 1, 'b': 2}]) == {'a': 10, 'b': 10}

@@ -25,3 +25,9 @@ def test_int_to_string():
     Check the corretness of int_to_string
     """
     assert int_to_string(1, ["a", "b", "c"]) == "b"
+    assert int_to_string(1, ["a", "b", "c"], padding=3) == "aab"
+    assert int_to_string(1, ["a", "b", "c"], padding=4) == "aaab"
+    assert int_to_string(1, ["a", "b", "c"], padding=5) == "aaaab"
+    assert int_to_string(1, ["a", "b", "c"], padding=6) == "aaaaab"
+    assert int_to_string(1, ["a", "b", "c"], padding=7) == "aaaaaab"
+    assert int_to_string(1, ["a", "b", "c"], padding=8) == "aaaaaaab"

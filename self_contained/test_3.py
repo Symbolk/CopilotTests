@@ -10,5 +10,6 @@ def test_subclasses():
     """
     Check the corretness of subclasses
     """
+    assert subclasses(set) == set()
     
 

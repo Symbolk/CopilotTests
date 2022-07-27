@@ -23,5 +23,7 @@ def test_vertex3tuple():
     """
     Check the corretness of vertex3tuple
     """
-    assert vertex3tuple(["A", "B", "C", "D"]) == [("D", "A", "B"), ("A", "B", "C"), ("B", "C", "D"), ("C", "D", "A")]
-    
+    assert set(vertex3tuple(["A", "B", "C", "D"])) == set([("D", "A", "B"), ("A", "B", "C"), ("B", "C", "D"), ("C", "D", "A")])
+    assert set(vertex3tuple(["A", "B", "C"])) == set([("A", "B", "C"), ("B", "C", "A"), ("C", "A", "B")])
+    assert set(vertex3tuple(["A", "B","C","D","E"])) == set([("E", "A", "B"), ("A", "B", "C"), ("B", "C", "D"), ("C", "D", "E"), ("D", "E", "A")])
+    assert set(vertex3tuple(["A", "B","C","D","E","F"])) == set([("F", "A", "B"), ("A", "B", "C"), ("B", "C", "D"), ("C", "D", "E"), ("D", "E", "F"), ("E", "F", "A")])
