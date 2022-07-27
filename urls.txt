@@ -1,0 +1,39 @@
+self_contained/1 https://github.com/zimeon/ocfl-py/blob/3ebb87a/ocfl/dispositor.py#L10
+
+self_contained/14 https://github.com/ossobv/planb/blob/ca7c5fae76bb957b9b76b8cabcf130652e3ef3a1/contrib/planb-swiftsync.py#L1201
+
+self_contained/15 https://github.com/SEED-platform/py-seed/blob/95e3bdb3818a03570bd763421ec5459db431462e/pyseed/apibase.py#L41
+
+self_contained/2 https://github.com/sipwise/repoapi/blob/653f0e629bcc356c2e624ca03e2334858b92428b/release_dashboard/templatetags/rd_extras.py#L23
+
+self_contained/9 https://github.com/santoshphilip/eppy/blob/873467a95dc4e2c7d3cd4bb1a656a58b44645afb/eppy/geometry/surface.py#L60
+
+self_contained/12 https://github.com/openstack/neutron-lib/blob/231067cabadb91eb40e44202b4f55785d5c7afe1/neutron_lib/agent/common/utils.py#L19
+
+self_contained/20 https://github.com/SoftwareHeritage/swh-lister-github/blob/1bf11aa26d9274186b927ea431b6b54eda0e9999/swh/lister/arch/lister.py#L28
+
+self_contained/3 https://github.com/turicas/rows/blob/2f6c5af4424dc26c54032c355c2d94dbd42967fa/rows/utils/__init__.py#L136
+
+self_contained/8 https://github.com/witten/borgmatic/blob/77b84f8a4888fc2d674ddb8680da79b9ae08aa63/borgmatic/commands/completion.py#L15
+
+self_contained/17 https://github.com/burgerbecky/makeprojects/blob/9a8c3938cfd90fe39308da7e0ede2b00a288ab7f/makeprojects/util.py#L138
+
+self_contained/10 https://github.com/infobloxopen/infoblox-client/blob/fc793bcfc3d24ff0297a1b388ad029de245a5553/infoblox_client/utils.py#L120
+
+self_contained/19 https://github.com/burgerbecky/makeprojects/blob/91bff1bc4bd52e3c14926e7ba3a4d2b6d0f119ad/makeprojects/util.py#L347
+
+self_contained/6 https://github.com/skorokithakis/shortuuid/blob/50a23a4b5e3bd4550b291702bcc4b60c0017e85c/shortuuid/main.py#L10
+
+self_contained/7 https://github.com/skorokithakis/shortuuid/blob/50a23a4b5e3bd4550b291702bcc4b60c0017e85c/shortuuid/main.py#L27
+
+self_contained/5 https://github.com/openstack/cinder/blob/4c24a3a54c693f2120104abc45df6b5e4622b884/cinder/api/api_utils.py#L62
+
+self_contained/11 https://github.com/ikus060/rdiffweb/blob/1e6f19a3ed4883376ef8581b5000490e53134378/rdiffweb/plugins/smtp.py#L94
+
+self_contained/16 https://github.com/SoftwareHeritage/swh-lister/blob/1bf11aa26d9274186b927ea431b6b54eda0e9999/swh/lister/arch/lister.py#L28
+
+self_contained/4 https://github.com/openstack/cinder/blob/5179e4f6bf49795d2aa4c8d0807a502ee1561f60/cinder/scheduler/base_weight.py#L33
+
+self_contained/13 https://github.com/lukebpotato/djangae/blob/167ade98c4333e1efcaed537a7973bd354218c98/djangae/processing.py#L49
+
+self_contained/18 https://github.com/burgerbecky/makeprojects/blob/9a8c3938cfd90fe39308da7e0ede2b00a288ab7f/makeprojects/util.py#L23
