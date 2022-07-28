@@ -53,11 +53,11 @@ def parse_request(request):
     download_file(url)
     os.system('unzip {} -d {}'.format(pjoin(tmp_path,'*.zip'),tmp_path))
     os.system('rm {}'.format(pjoin(tmp_path,'*.zip')))
-    os.system('mv {} {}'.format(pjoin(tmp_path,'*.py'),pjoin(os.getcwd(),file_store,file_index+'.py')))
+    os.system('mv {} {}'.format(pjoin(tmp_path,'*.py'),pjoin(os.getcwd(),file_store,'test_'+file_index+'.py')))
     ln = url.split('#')[-1]
     ln.strip('\n')
     ln = ln[1:]
-    isolate(int(ln),pjoin(os.getcwd(),file_store,file_index+'.py'))
+    # isolate(int(ln),pjoin(os.getcwd(),file_store,file_index+'.py'))
 def download_file(url):
     file_url = url.split('#')[0]
     # svn_url = re.sub('blob/+\w+/+','trunk/',file_url)
