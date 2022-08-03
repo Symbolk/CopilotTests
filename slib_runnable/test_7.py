@@ -691,3 +691,6 @@ def test_run_command():
     """Check the correctness of run_command
     """
     assert run_command(["echo"], ["hello"]) == ('hello', 0)
+    assert run_command(["echo"], ["hello", "world"]) == ('hello world', 0)
+    assert run_command(["echo"], ["hello", "world",'hhh']) == ('hello world hhh', 0)
+    assert run_command(["echo"], ["hello", "world",'111']) == ('hello world 111', 0)

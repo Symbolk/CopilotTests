@@ -1,0 +1,167 @@
+[
+    {
+        "file_path": "self_contained/test_10.py",
+        "name": "paging",
+        "docstring": "Returns WAPI response page by page\n\nArgs:\n    response (list): WAPI response.\n    max_results (int): Maximum number of objects to be returned in one page.\nReturns:\n    Generator object with WAPI response split page by page.",
+        "lineno": 2,
+        "code": "def paging(response, max_results):\n    \"\"\"Returns WAPI response page by page\n\n    Args:\n        response (list): WAPI response.\n        max_results (int): Maximum number of objects to be returned in one page.\n    Returns:\n        Generator object with WAPI response split page by page.\n    \"\"\"\n    i = 0\n    while i < len(response):\n        yield response[i:i + max_results]\n        i = i + max_results\n",
+        "test_name": "test_paging",
+        "test_lineno": 16,
+        "test_code": "def test_paging():\n    \"\"\"\n    Check the corretness of paging\n    \"\"\"\n    assert list(paging([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 3)) == [[1, 2, 3], [4, 5, 6], [7, 8, 9], [10]]\n    assert list(paging([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 4)) == [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10]]\n    assert list(paging([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 5)) == [[1, 2, 3, 4, 5], [6, 7, 8, 9, 10]]\n    assert list(paging([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 6)) == [[1, 2, 3, 4, 5, 6], [7, 8, 9, 10]]\n    assert list(paging([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 7)) == [[1, 2, 3, 4, 5, 6, 7], [8, 9, 10]]\n",
+        "level": "self_contained"
+    },
+    {
+        "file_path": "self_contained/test_20.py",
+        "name": "size_to_bytes",
+        "docstring": "Convert human readable file size to bytes.\n\nResulting value is an approximation as input value is in most case rounded.\n\nArgs:\n    size: A string representing a human readable file size (eg: '500K')\n\nReturns:\n    A decimal representation of file size\n\n    Examples::\n\n        >>> size_to_bytes(\"500\")\n        500\n        >>> size_to_bytes(\"1K\")\n        1000",
+        "lineno": 10,
+        "code": "def size_to_bytes(size: str) -> int:\n    \"\"\"Convert human readable file size to bytes.\n\n    Resulting value is an approximation as input value is in most case rounded.\n\n    Args:\n        size: A string representing a human readable file size (eg: '500K')\n\n    Returns:\n        A decimal representation of file size\n\n        Examples::\n\n            >>> size_to_bytes(\"500\")\n            500\n            >>> size_to_bytes(\"1K\")\n            1000\n    \"\"\"\n    units = {\n        \"K\": 1000,\n        \"M\": 1000**2,\n        \"G\": 1000**3,\n        \"T\": 1000**4,\n        \"P\": 1000**5,\n        \"E\": 1000**6,\n        \"Z\": 1000**7,\n        \"Y\": 1000**8,\n    }\n    if size.endswith(tuple(units)):\n        v, u = (size[:-1], size[-1])\n        return int(v) * units[u]\n    else:\n        return int(size)\n",
+        "test_name": "test_size_to_bytes",
+        "test_lineno": 45,
+        "test_code": "def test_size_to_bytes():\n    \"\"\"\n    Check the corretness of size_to_bytes\n    \"\"\"\n    assert size_to_bytes(\"500\") == 500\n    assert size_to_bytes(\"1K\") == 1000\n    assert size_to_bytes(\"1M\") == 1000**2\n    assert size_to_bytes(\"1G\") == 1000**3\n    assert size_to_bytes(\"1T\") == 1000**4\n    assert size_to_bytes(\"1P\") == 1000**5",
+        "level": "self_contained"
+    },
+    {
+        "file_path": "self_contained/test_14.py",
+        "name": "_dictsum",
+        "docstring": "Combine values of the dictionaries supplied by iterable dicts.\n\n>>> _dictsum([{'a': 1, 'b': 2}, {'a': 5, 'b': 0}])\n{'a': 6, 'b': 2}",
+        "lineno": 17,
+        "code": "def _dictsum(dicts):\n    \"\"\"\n    Combine values of the dictionaries supplied by iterable dicts.\n\n    >>> _dictsum([{'a': 1, 'b': 2}, {'a': 5, 'b': 0}])\n    {'a': 6, 'b': 2}\n    \"\"\"\n    it = iter(dicts)\n    first = next(it).copy()\n    for d in it:\n        for k, v in d.items():\n            first[k] += v\n    return first\n",
+        "test_name": "test__dictsum",
+        "test_lineno": 32,
+        "test_code": "def test__dictsum():\n    \"\"\"\n    Check the corretness of _dictsum\n    \"\"\"\n    assert  _dictsum([{'a': 1, 'b': 2}, {'a': 5, 'b': 0}]) == {'a': 6, 'b': 2}\n    assert _dictsum([{'a': 1, 'b': 2}, {'a': 5, 'b': 0}, {'a': 1, 'b': 2}]) == {'a': 7, 'b': 4}\n    assert _dictsum([{'a': 1, 'b': 2}, {'a': 5, 'b': 0}, {'a': 1, 'b': 2}, {'a': 1, 'b': 2}]) == {'a': 8, 'b': 6}\n    assert _dictsum([{'a': 1, 'b': 2}, {'a': 5, 'b': 0}, {'a': 1, 'b': 2}, {'a': 1, 'b': 2}, {'a': 1, 'b': 2}]) == {'a': 9, 'b': 8}\n    assert _dictsum([{'a': 1, 'b': 2}, {'a': 5, 'b': 0}, {'a': 1, 'b': 2}, {'a': 1, 'b': 2}, {'a': 1, 'b': 2}, {'a': 1, 'b': 2}]) == {'a': 10, 'b': 10}",
+        "level": "self_contained"
+    },
+    {
+        "file_path": "self_contained/test_15.py",
+        "name": "_replace_url_args",
+        "docstring": "Replace any custom string URL items with values in args",
+        "lineno": 3,
+        "code": "def _replace_url_args(url, url_args):\n    \"\"\"Replace any custom string URL items with values in args\"\"\"\n    if url_args:\n        for key, value in url_args.items():\n            url = url.replace(f\"{key}/\", f\"{value}/\")\n    return url\n",
+        "test_name": "test__replace_url_args",
+        "test_lineno": 10,
+        "test_code": "def test__replace_url_args():\n    \"\"\"\n    Check the corretness of _replace_url_args\n    \"\"\"\n    assert  _replace_url_args(\"http://localhost:8080/test/\", {}) == \"http://localhost:8080/test/\"\n    assert _replace_url_args(\"http://localhost:8080/test/\", {\"test\": \"test\"}) == \"http://localhost:8080/test/\"\n    assert _replace_url_args(\"http://localhost:8080/test/\", {\"test\": \"test\", \"test2\": \"test2\"}) == \"http://localhost:8080/test/\"\n    assert _replace_url_args(\"http://localhost:8080/test/\", {\"test\": \"test\", \"test2\": \"test2\", \"test3\": \"test3\"}) == \"http://localhost:8080/test/\"\n    assert _replace_url_args(\"http://localhost:8080/test/\", {\"test\": \"test\", \"test2\": \"test2\", \"test3\": \"test3\", \"test4\": \"test4\"}) == \"http://localhost:8080/test/\"\n    assert _replace_url_args(\"http://localhost:8080/test/\", {\"test\": \"reverse\", \"test2\": \"test2\", \"test3\": \"test3\", \"test4\": \"test4\", \"test5\": \"test5\"}) == \"http://localhost:8080/reverse/\"\n    assert _replace_url_args(\"http://localhost:8080/test/\", {\"test\": \"reverse\", \"test2\": \"test2\", \"test3\": \"test3\", \"test4\": \"test4\", \"test5\": \"test5\", \"test6\": \"test6\"}) == \"http://localhost:8080/reverse/\"",
+        "level": "self_contained"
+    },
+    {
+        "file_path": "self_contained/test_5.py",
+        "name": "is_none_string",
+        "docstring": "Check if a string represents a None value.",
+        "lineno": 1,
+        "code": "def is_none_string(val: any) -> bool:\n    \"\"\"Check if a string represents a None value.\"\"\"\n    if not isinstance(val, str):\n        return False\n\n    return val.lower() == 'none'\n",
+        "test_name": "test_is_none_string",
+        "test_lineno": 8,
+        "test_code": "def test_is_none_string():\n    \"\"\"\n    Check the corretness of is_none_string\n    \"\"\"\n    assert is_none_string('None')==True\n    assert is_none_string('none')==True\n    assert is_none_string('not none')==False\n    assert is_none_string(None)==False\n    assert is_none_string('')==False\n    assert is_none_string(' ')==False\n",
+        "level": "self_contained"
+    },
+    {
+        "file_path": "self_contained/test_1.py",
+        "name": "strip_root",
+        "docstring": "Remove root from path, throw exception on failure.",
+        "lineno": 5,
+        "code": "def strip_root(path, root):\n    \"\"\"Remove root from path, throw exception on failure.\"\"\"\n    root = root.rstrip(os.sep)  # ditch any trailing path separator\n    if os.path.commonprefix((path, root)) == root:\n        return os.path.relpath(path, start=root)\n    raise Exception(\"Path %s is not in root %s\" % (path, root))\n",
+        "test_name": "test_strip_root",
+        "test_lineno": 12,
+        "test_code": "def test_strip_root():\n    \"\"\"\n    Check the corretness of strip_root\n    \"\"\"\n    assert strip_root(\"/home/user/test\", \"/home/user\") == \"test\"\n    assert strip_root(\"/home/user/test/\", \"/home/user\") == \"test\"\n    assert strip_root(\"/home/user/test/\", \"/home/user/\") == \"test\"\n    assert strip_root(\"/home/user/test/\", \"/home/user/test\") == '.'\n    assert strip_root(\"/home/user/test/\", \"/home/user/test/\") == '.'\n",
+        "level": "self_contained"
+    },
+    {
+        "file_path": "self_contained/test_8.py",
+        "name": "parser_flags",
+        "docstring": "Given an argparse.ArgumentParser instance, return its argument flags in a space-separated\nstring.",
+        "lineno": 3,
+        "code": "def parser_flags(parser):\n    '''\n    Given an argparse.ArgumentParser instance, return its argument flags in a space-separated\n    string.\n    '''\n    return ' '.join(option for action in parser._actions for option in action.option_strings)\n",
+        "test_name": "test_parser_flags",
+        "test_lineno": 10,
+        "test_code": "def test_parser_flags():\n    \"\"\"\n    Check the corretness of parser_flags\n    \"\"\"\n    assert parser_flags(argparse.ArgumentParser()) == '-h --help'\n    assert parser_flags(argparse.ArgumentParser(add_help=False)) == ''\n    assert parser_flags(argparse.ArgumentParser(prog='test')) == '-h --help'\n    assert parser_flags(argparse.ArgumentParser(prog='test', add_help=False)) == ''\n    assert parser_flags(argparse.ArgumentParser(prog='test', description='test')) == '-h --help'\n    assert parser_flags(argparse.ArgumentParser(prog='test', description='test', add_help=False)) == ''\n    assert parser_flags(argparse.ArgumentParser(prog='test', description='test', epilog='test')) == '-h --help'",
+        "level": "self_contained"
+    },
+    {
+        "file_path": "self_contained/test_19.py",
+        "name": "was_processed",
+        "docstring": "Check if a file or directory has already been processed.\n\nTo prevent recursion, expand the path name to an absolution path\ncall this function with a set that will store all the entries and\nthe entry to test. If the entry is already in the set, report the issue\nand return ``True``. Otherwise, add the entry to the set and return\n``False`` to allow the path to be processed.\n\nArgs:\n    processed: Set to store processed pathnames\n    path_name: Path to a directory or file\n    verbose: True if verbose output is requested\n\nReturns:\n    True if it's already in the set. False if not.",
+        "lineno": 5,
+        "code": "def was_processed(processed, path_name, verbose):\n    \"\"\"\n    Check if a file or directory has already been processed.\n\n    To prevent recursion, expand the path name to an absolution path\n    call this function with a set that will store all the entries and\n    the entry to test. If the entry is already in the set, report the issue\n    and return ``True``. Otherwise, add the entry to the set and return\n    ``False`` to allow the path to be processed.\n\n    Args:\n        processed: Set to store processed pathnames\n        path_name: Path to a directory or file\n        verbose: True if verbose output is requested\n\n    Returns:\n        True if it's already in the set. False if not.\n    \"\"\"\n\n    # Test for recursion\n    if path_name in processed:\n        if verbose:\n            print('{} has already been processed'.format(path_name))\n        return True\n\n    # Mark this list as \"processed\" to prevent recursion\n    if verbose:\n        print('Processing {}.'.format(path_name))\n    processed.add(path_name)\n    return False\n",
+        "test_name": "test_was_processed",
+        "test_lineno": 36,
+        "test_code": "def test_was_processed():\n    \"\"\"\n    Check the corretness of was_processed\n    \"\"\"\n    assert was_processed(set(), \"A\", True) == False\n    assert was_processed(set(), \"A\", False) == False\n    assert was_processed(set(), \"A\", True) == False\n    assert was_processed(set(\"A\"), \"A\", False) == True\n    assert was_processed(set(\"A\"), \"A\", True) == True",
+        "level": "self_contained"
+    },
+    {
+        "file_path": "self_contained/test_9.py",
+        "name": "vertex3tuple",
+        "docstring": "return 3 points for each vertex of the polygon. This will include the vertex and the 2 points on both sides of the vertex::\n\npolygon with vertices ABCD\nWill return\nDAB, ABC, BCD, CDA -> returns 3tuples\n#A    B    C    D  -> of vertices",
+        "lineno": 6,
+        "code": "def vertex3tuple(vertices):\n    \"\"\"return 3 points for each vertex of the polygon. This will include the vertex and the 2 points on both sides of the vertex::\n\n        polygon with vertices ABCD\n        Will return\n        DAB, ABC, BCD, CDA -> returns 3tuples\n        #A    B    C    D  -> of vertices\n    \"\"\"\n    asvertex_list = []\n    for i in range(len(vertices)):\n        try:\n            asvertex_list.append((vertices[i-1], vertices[i], vertices[i+1]))\n        except IndexError as e:\n           asvertex_list.append((vertices[i-1], vertices[i], vertices[0]))\n    return asvertex_list\n",
+        "test_name": "test_vertex3tuple",
+        "test_lineno": 22,
+        "test_code": "def test_vertex3tuple():\n    \"\"\"\n    Check the corretness of vertex3tuple\n    \"\"\"\n    assert set(vertex3tuple([\"A\", \"B\", \"C\", \"D\"])) == set([(\"D\", \"A\", \"B\"), (\"A\", \"B\", \"C\"), (\"B\", \"C\", \"D\"), (\"C\", \"D\", \"A\")])\n    assert set(vertex3tuple([\"A\", \"B\", \"C\"])) == set([(\"A\", \"B\", \"C\"), (\"B\", \"C\", \"A\"), (\"C\", \"A\", \"B\")])\n    assert set(vertex3tuple([\"A\", \"B\",\"C\",\"D\",\"E\"])) == set([(\"E\", \"A\", \"B\"), (\"A\", \"B\", \"C\"), (\"B\", \"C\", \"D\"), (\"C\", \"D\", \"E\"), (\"D\", \"E\", \"A\")])\n    assert set(vertex3tuple([\"A\", \"B\",\"C\",\"D\",\"E\",\"F\"])) == set([(\"F\", \"A\", \"B\"), (\"A\", \"B\", \"C\"), (\"B\", \"C\", \"D\"), (\"C\", \"D\", \"E\"), (\"D\", \"E\", \"F\"), (\"E\", \"F\", \"A\")])",
+        "level": "self_contained"
+    },
+    {
+        "file_path": "self_contained/test_6.py",
+        "name": "int_to_string",
+        "docstring": "Convert a number to a string, using the given alphabet.\n\nThe output has the most significant digit first.",
+        "lineno": 6,
+        "code": "def int_to_string(number: int, alphabet: List[str], padding: Optional[int] = None) -> str:\n    \"\"\"\n    Convert a number to a string, using the given alphabet.\n\n    The output has the most significant digit first.\n    \"\"\"\n    output = \"\"\n    alpha_len = len(alphabet)\n    while number:\n        number, digit = divmod(number, alpha_len)\n        output += alphabet[digit]\n    if padding:\n        remainder = max(padding - len(output), 0)\n        output = output + alphabet[0] * remainder\n    return output[::-1]\n",
+        "test_name": "test_int_to_string",
+        "test_lineno": 23,
+        "test_code": "def test_int_to_string():\n    \"\"\"\n    Check the corretness of int_to_string\n    \"\"\"\n    assert int_to_string(1, [\"a\", \"b\", \"c\"]) == \"b\"\n    assert int_to_string(1, [\"a\", \"b\", \"c\"], padding=3) == \"aab\"\n    assert int_to_string(1, [\"a\", \"b\", \"c\"], padding=4) == \"aaab\"\n    assert int_to_string(1, [\"a\", \"b\", \"c\"], padding=5) == \"aaaab\"\n    assert int_to_string(1, [\"a\", \"b\", \"c\"], padding=6) == \"aaaaab\"\n    assert int_to_string(1, [\"a\", \"b\", \"c\"], padding=7) == \"aaaaaab\"\n    assert int_to_string(1, [\"a\", \"b\", \"c\"], padding=8) == \"aaaaaaab\"\n",
+        "level": "self_contained"
+    },
+    {
+        "file_path": "self_contained/test_12.py",
+        "name": "_replace_register",
+        "docstring": "Replace value from flows to given register number\n\n'register_value' key in dictionary will be replaced by register number\ngiven by 'register_number'\n\n:param flow_params: Dictionary containing defined flows\n:param register_number: The number of register where value will be stored\n:param register_value: Key to be replaced by register number",
+        "lineno": 1,
+        "code": "def _replace_register(flow_params, register_number, register_value):\n    \"\"\"Replace value from flows to given register number\n\n    'register_value' key in dictionary will be replaced by register number\n    given by 'register_number'\n\n    :param flow_params: Dictionary containing defined flows\n    :param register_number: The number of register where value will be stored\n    :param register_value: Key to be replaced by register number\n\n    \"\"\"\n    try:\n        reg_port = flow_params[register_value]\n        del flow_params[register_value]\n        flow_params['reg{:d}'.format(register_number)] = reg_port\n    except KeyError:\n        pass\n    return flow_params # expose the observer to the test_module\n",
+        "test_name": "test__replace_register",
+        "test_lineno": 21,
+        "test_code": "def test__replace_register():\n    \"\"\"\n    Check the corretness of _replace_register\n    \"\"\"\n    assert _replace_register({'reg1': 1, 'reg2': 2, 'reg3': 3}, 1, 'reg1') == {'reg1': 1, 'reg2': 2, 'reg3': 3}\n    assert _replace_register({'reg1': 1, 'reg2': 2, 'reg3': 3}, 2, 'reg2') == {'reg1': 1, 'reg2': 2, 'reg3': 3}\n    assert _replace_register({'reg1': 1, 'reg2': 2, 'reg3': 3}, 3, 'reg3') == {'reg1': 1, 'reg2': 2, 'reg3': 3}\n    assert _replace_register({'reg1': 1, 'reg2': 2, 'reg3': 3}, 1, 'reg2') == {'reg1': 2, 'reg3': 3}\n    assert _replace_register({'reg1': 1, 'reg2': 2, 'reg3': 3}, 2, 'reg3') == {'reg1': 1, 'reg2': 3}\n    assert _replace_register({'reg1': 1, 'reg2': 2, 'reg3': 3}, 3, 'reg1') == {'reg2': 2, 'reg3': 1}",
+        "level": "self_contained"
+    },
+    {
+        "file_path": "self_contained/test_2.py",
+        "name": "replace_dots",
+        "docstring": "Replaces all values of '.' to arg from the given string",
+        "lineno": 2,
+        "code": "def replace_dots(value, arg):\n    \"\"\"Replaces all values of '.' to arg from the given string\"\"\"\n    return value.replace(\".\", arg)\n",
+        "test_name": "test_replace_dots",
+        "test_lineno": 6,
+        "test_code": "def test_replace_dots():\n    \"\"\"\n    Check the corretness of replace_dots\n    \"\"\"\n    assert  replace_dots(\"test.txt\", \".\") == \"test.txt\"\n    assert replace_dots(\"test.txt\", \" \") == \"test txt\"\n    assert replace_dots(\"test.txt\", \"\") == \"testtxt\"\n    assert replace_dots(\"test.txt\", \".\") == \"test.txt\"",
+        "level": "self_contained"
+    },
+    {
+        "file_path": "self_contained/test_3.py",
+        "name": "subclasses",
+        "docstring": "Return all subclasses of a class, recursively",
+        "lineno": 1,
+        "code": "def subclasses(cls):\n    \"\"\"Return all subclasses of a class, recursively\"\"\"\n    children = cls.__subclasses__()\n    return set(children).union(\n        set(grandchild for child in children for grandchild in subclasses(child))\n    )\n",
+        "test_name": "test_subclasses",
+        "test_lineno": 9,
+        "test_code": "def test_subclasses():\n    \"\"\"\n    Check the corretness of subclasses\n    \"\"\"\n    assert subclasses(set) == set()\n",
+        "level": "self_contained"
+    },
+    {
+        "file_path": "self_contained/test_17.py",
+        "name": "source_file_filter",
+        "docstring": "Prune the file list for a specific type.\n\nNote: file_type_list can either be a single enums.FileTypes enum or an\n    iterable list of enums.FileTypes\n\nArgs:\n    file_list: list of core.SourceFile entries.\n    file_type_list: enums.FileTypes to match.\nReturns:\n    list of matching core.SourceFile entries.",
+        "lineno": 8,
+        "code": "def source_file_filter(file_list, file_type_list):\n    \"\"\"\n    Prune the file list for a specific type.\n\n    Note: file_type_list can either be a single enums.FileTypes enum or an\n        iterable list of enums.FileTypes\n\n    Args:\n        file_list: list of core.SourceFile entries.\n        file_type_list: enums.FileTypes to match.\n    Returns:\n        list of matching core.SourceFile entries.\n    \"\"\"\n\n    result_list = []\n\n    # If a single item was passed, use a simple loop\n    if isinstance(file_type_list, FileTypes):\n        for item in file_list:\n            if item.type is file_type_list:\n                result_list.append(item)\n    else:\n        # A list was passed, so test against the list\n        for item in file_list:\n            if item.type in file_type_list:\n                result_list.append(item)\n    return result_list\n",
+        "test_name": "test_source_file_filter",
+        "test_lineno": 38,
+        "test_code": "def test_source_file_filter():\n    \"\"\"\n    Check the corretness of source_file_filter\n    \"\"\"\n",
+        "level": "self_contained"
+    },
+    {
+        "file_path": "self_contained/test_7.py",
+        "name": "string_to_int",
+        "docstring": "Convert a string to a number, using the given alphabet.\n\nThe input is assumed to have the most significant digit first.",
+        "lineno": 6,
+        "code": "def string_to_int(string: str, alphabet: List[str]) -> int:\n    \"\"\"\n    Convert a string to a number, using the given alphabet.\n\n    The input is assumed to have the most significant digit first.\n    \"\"\"\n    number = 0\n    alpha_len = len(alphabet)\n    for char in string:\n        number = number * alpha_len + alphabet.index(char)\n    return number\n",
+        "test_name": "test_string_to_int",
+        "test_lineno": 18,
+        "test_code": "def test_string_to_int():\n    \"\"\"\n    Check the corretness of string_to_int\n    \"\"\"\n    assert string_to_int(\"b\", [\"a\", \"b\", \"c\"]) == 1\n    assert string_to_int(\"c\", [\"a\", \"b\", \"c\"]) == 2\n    assert string_to_int(\"aab\", [\"a\", \"b\", \"c\"]) == 1\n    assert string_to_int(\"aaab\", [\"a\", \"b\", \"c\"]) == 1\n    assert string_to_int(\"aaaab\", [\"a\", \"b\", \"c\"]) == 1\n    assert string_to_int(\"aaaaab\", [\"a\", \"b\", \"c\"]) == 1\n",
+        "level": "self_contained"
+    }
+]
