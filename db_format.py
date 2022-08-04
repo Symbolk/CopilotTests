@@ -4,7 +4,7 @@ from os.path import join as pjoin
 import ast
 import json
 
-ROOT='self_contained'
+# ROOT='self_contained'
 ROOT='plib_runnable'
 # ROOT='slib_runnable'
 files = os.listdir(ROOT)
@@ -63,7 +63,7 @@ alls = []
 def filter_case(category,f):
     index = f.split('.')[0].split('_')[-1]
     if category=='plib_runnable':
-        if index in []:
+        if index in ['5','9','10','12','14']:
             return True
     if category=='slib_runnable':
         if index in ['12','3']:

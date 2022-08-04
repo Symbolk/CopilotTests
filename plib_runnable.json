@@ -1,27 +1,5 @@
 [
     {
-        "file_path": "plib_runnable/test_10.py",
-        "name": "parse_desc_file",
-        "docstring": "Extract package information from a 'desc' file.\nThere are subtle differences between parsing 'official' and 'arm' des files\n\nArgs:\n    path: A path to a 'desc' file on disk\n    repo: The repo the package belongs to\n\nReturns:\n    A dict of metadata\n\n    Example::\n\n        {'api_url': 'https://archlinux.org/packages/core/x86_64/dialog/json',\n         'arch': 'x86_64',\n         'base': 'dialog',\n         'builddate': '1650081535',\n         'csize': '203028',\n         'desc': 'A tool to display dialog boxes from shell scripts',\n         'filename': 'dialog-1:1.3_20220414-1-x86_64.pkg.tar.zst',\n         'isize': '483988',\n         'license': 'LGPL2.1',\n         'md5sum': '06407c0cb11c50d7bf83d600f2e8107c',\n         'name': 'dialog',\n         'packager': 'Evangelos Foutras <foutrelis@archlinux.org>',\n         'pgpsig': 'pgpsig content xxx',\n         'project_url': 'https://invisible-island.net/dialog/',\n         'provides': 'libdialog.so=15-64',\n         'repo': 'core',\n         'sha256sum': 'ef8c8971f591de7db0f455970ef5d81d5aced1ddf139f963f16f6730b1851fa7',\n         'url': 'https://archive.archlinux.org/packages/.all/dialog-1:1.3_20220414-1-x86_64.pkg.tar.zst',  # noqa: B950\n         'version': '1:1.3_20220414-1'}",
-        "lineno": 23,
-        "code": "def parse_desc_file(\n        path: Path,\n        repo: str,\n        base_url: str,\n        dl_url_fmt: str,\n    ) -> Dict[str, Any]:\n        \"\"\"Extract package information from a 'desc' file.\n        There are subtle differences between parsing 'official' and 'arm' des files\n\n        Args:\n            path: A path to a 'desc' file on disk\n            repo: The repo the package belongs to\n\n        Returns:\n            A dict of metadata\n\n            Example::\n\n                {'api_url': 'https://archlinux.org/packages/core/x86_64/dialog/json',\n                 'arch': 'x86_64',\n                 'base': 'dialog',\n                 'builddate': '1650081535',\n                 'csize': '203028',\n                 'desc': 'A tool to display dialog boxes from shell scripts',\n                 'filename': 'dialog-1:1.3_20220414-1-x86_64.pkg.tar.zst',\n                 'isize': '483988',\n                 'license': 'LGPL2.1',\n                 'md5sum': '06407c0cb11c50d7bf83d600f2e8107c',\n                 'name': 'dialog',\n                 'packager': 'Evangelos Foutras <foutrelis@archlinux.org>',\n                 'pgpsig': 'pgpsig content xxx',\n                 'project_url': 'https://invisible-island.net/dialog/',\n                 'provides': 'libdialog.so=15-64',\n                 'repo': 'core',\n                 'sha256sum': 'ef8c8971f591de7db0f455970ef5d81d5aced1ddf139f963f16f6730b1851fa7',\n                 'url': 'https://archive.archlinux.org/packages/.all/dialog-1:1.3_20220414-1-x86_64.pkg.tar.zst',  # noqa: B950\n                 'version': '1:1.3_20220414-1'}\n        \"\"\"\n        rex = re.compile(r\"^\\%(?P<k>\\w+)\\%\\n(?P<v>.*)\\n$\", re.M)\n        with path.open(\"rb\") as content:\n            parsed = rex.findall(content.read().decode())\n            data = {entry[0].lower(): entry[1] for entry in parsed}\n\n            if \"url\" in data.keys():\n                data[\"project_url\"] = data[\"url\"]\n\n            assert data[\"name\"]\n            assert data[\"filename\"]\n            assert data[\"arch\"]\n\n            data[\"repo\"] = repo\n            data[\"url\"] = urljoin(\n                base_url,\n                dl_url_fmt.format(\n                    base_url=base_url,\n                    pkgname=data[\"name\"],\n                    filename=data[\"filename\"],\n                    arch=data[\"arch\"],\n                    repo=repo,\n                ),\n            )\n\n            assert data[\"md5sum\"]\n            assert data[\"sha256sum\"]\n            data[\"checksums\"] = {\n                \"md5sum\": hash_to_hex(data[\"md5sum\"]),\n                \"sha256sum\": hash_to_hex(data[\"sha256sum\"]),\n            }\n        return data\n",
-        "test_name": "test_parse_desc_file",
-        "test_lineno": 95,
-        "test_code": "def test_parse_desc_file():\n    \"\"\"Check the correctness of parse_desc_file\n    \"\"\"\n    assert parse_desc_file(Path('/tmp/archlinux_archive'), \\\n        'core', 'https://archive.archlinux.org/packages/', \\\n            'https://archive.archlinux.org/packages/{repo}/{base}/{pkgname}/{filename}') \\\n                == {'api_url': 'https://archlinux.org/packages/core/x86_64/dialog/json', 'arch': 'x86_64', \\\n                    'base': 'dialog', 'builddate': '1650081535', \\\n                        'csize': '203028', 'desc': 'A tool to display dialog boxes from shell scripts', \\\n                            'filename': 'dialog-1:1.3_20220414-1-x86_64.pkg.tar.zst', 'isize': '483988', \\\n                                'license': 'LGPL2.1', 'md5sum': '06407c0cb11c50d7bf83d600f2e8107c', \\\n                                'name': 'dialog', 'packager': 'Evangelos Foutras'}",
-        "level": "plib_runnable"
-    },
-    {
-        "file_path": "plib_runnable/test_14.py",
-        "name": "lookup_random_serial_number_version",
-        "docstring": "Retrieve the random serial number version number from the\nremote server.\n\nIf the value is > 0 then RSN was enabled. Return the raw\nvalue for future-proofing in case version-specific decisions\nneed to be made.\n\nReturns 0 if RSN is not enabled or otherwise not available.",
-        "lineno": 40,
-        "code": "def lookup_random_serial_number_version(api):\n    \"\"\"\n    Retrieve the random serial number version number from the\n    remote server.\n\n    If the value is > 0 then RSN was enabled. Return the raw\n    value for future-proofing in case version-specific decisions\n    need to be made.\n\n    Returns 0 if RSN is not enabled or otherwise not available.\n    \"\"\"\n    dn = DN(('cn', IPA_CA_CN), api.env.container_ca, api.env.basedn)\n    version = 0\n    try:\n        # we do not use api.Command.ca_show because it attempts to\n        # talk to the CA (to read certificate / chain), but the RA\n        # backend may be unavailable (ipa-replica-install) or unusable\n        # due to RA Agent cert not yet created (ipa-ca-install).\n        entry = api.Backend.ldap2.get_entry(dn)\n\n        # If the attribute doesn't exist then the remote didn't\n        # enable RSN.\n        if 'ipacarandomserialnumberversion' in entry:\n            version = int(entry['ipacarandomserialnumberversion'][0])\n    except (errors.NotFound, KeyError):\n        # if the entry doesn't exist then the remote doesn't support\n        # RSN so there is nothing to do.\n        pass\n\n    return version\n",
-        "test_name": "test_lookup_random_serial_number_version",
-        "test_lineno": 73,
-        "test_code": "def test_lookup_random_serial_number_version():\n    \"\"\"Check the correctness of lookup_random_serial_number_version\n    \"\"\"\n    assert lookup_random_serial_number_version(api=api) == 0",
-        "level": "plib_runnable"
-    },
-    {
         "file_path": "plib_runnable/test_4.py",
         "name": "is_ipv4",
         "docstring": "Test if IPv4 address or not\n    ",
@@ -30,17 +8,6 @@
         "test_name": "test_is_ipv4",
         "test_lineno": 34,
         "test_code": "def test_is_ipv4():\n    \"\"\"Check the correctness of is_ipv4\n    \"\"\"\n    assert is_ipv4('127.0.0.1') == True\n    assert is_ipv4('127.0.0.256') == False\n    assert is_ipv4('fe80:0000:0001:0000:0440:44ff:1233:5678') == False\n    assert is_ipv4('12.134.25.123') == True\n    assert is_ipv4(' ') == False\n    assert is_ipv4('ipv4') == False",
-        "level": "plib_runnable"
-    },
-    {
-        "file_path": "plib_runnable/test_5.py",
-        "name": "to_sql_method_pg_copy_to",
-        "docstring": "Write pandas data to table via stream through PostgreSQL\n``COPY``.\n\nThis implements a pandas ``to_sql`` \"method\", utilizing\n``ohio.CsvTextIO`` for performance stability.",
-        "lineno": 36,
-        "code": "def to_sql_method_pg_copy_to(table, engine, keys, data_iter):\n    \"\"\"Write pandas data to table via stream through PostgreSQL\n    ``COPY``.\n\n    This implements a pandas ``to_sql`` \"method\", utilizing\n    ``ohio.CsvTextIO`` for performance stability.\n\n    \"\"\"\n    columns = ', '.join('\"{}\"'.format(key) for key in keys)\n    if table.schema:\n        table_name = '{}.{}'.format(table.schema, table.name)\n    else:\n        table_name = table.name\n\n    sql = 'COPY {table_name} ({columns}) FROM STDIN WITH CSV'.format(\n        table_name=table_name,\n        columns=columns,\n    )\n\n    with ohio.CsvTextIO(data_iter) as csv_buffer:\n        with engine.connect() as conn:\n            with conn.connection.cursor() as cursor:\n                cursor.copy_expert(sql, csv_buffer)\n",
-        "test_name": "test_to_sql_method_pg_copy_to",
-        "test_lineno": 61,
-        "test_code": "def test_to_sql_method_pg_copy_to():\n    \"\"\"Check the correctness of to_sql_method_pg_copy_to\n    \"\"\"\n    assert to_sql_method_pg_copy_to(None, None, [], None) is None",
         "level": "plib_runnable"
     },
     {
@@ -77,17 +44,6 @@
         "level": "plib_runnable"
     },
     {
-        "file_path": "plib_runnable/test_9.py",
-        "name": "is_powershell",
-        "docstring": "True if you run in powershell\n\n:return: True if you run in powershell",
-        "lineno": 19,
-        "code": "def is_powershell():\n    \"\"\"\n    True if you run in powershell\n\n    :return: True if you run in powershell\n    \"\"\"\n    # psutil.Process(parent_pid).name() returns -\n    # cmd.exe for CMD\n    # powershell.exe for powershell\n    # bash.exe for git bash\n    return (psutil.Process(os.getppid()).name() == \"powershell.exe\")\n",
-        "test_name": "test_is_powershell",
-        "test_lineno": 32,
-        "test_code": "def test_is_powershell():\n    \"\"\"Check the correctness of is_powershell\n    \"\"\"\n    assert is_powershell()==False",
-        "level": "plib_runnable"
-    },
-    {
         "file_path": "plib_runnable/test_6.py",
         "name": "make_array",
         "docstring": "Function to create an array with shape and dtype.\n\nParameters\n----------\nshape : tuple\n    shape of the array to create\ndtype : `numpy.dtype`\n    data-type of the array to create",
@@ -96,17 +52,6 @@
         "test_name": "test_make_array",
         "test_lineno": 54,
         "test_code": "def test_make_array():\n    \"\"\"Check the correctness of make_array\n    \"\"\"\n    assert make_array((3,4)).shape == (3,4)\n    assert make_array((3,4), dtype=np.dtype(\"float64\")).dtype == np.dtype(\"float64\")\n    assert make_array((3,4), dtype=np.dtype(\"float64\")).shape == (3,4)\n    assert make_array((3,4), dtype=np.dtype(\"float64\"))[0][0]== 0\n    assert make_array((3,4), dtype=np.dtype(\"float64\"))[-1][-1]== 0",
-        "level": "plib_runnable"
-    },
-    {
-        "file_path": "plib_runnable/test_12.py",
-        "name": "is_sites_framework_enabled",
-        "docstring": "Check project's settings to see if the optional Sites framework is installed.",
-        "lineno": 2,
-        "code": "def is_sites_framework_enabled() -> bool:\n    \"\"\"\n    Check project's settings to see if the optional Sites framework is installed.\n    \"\"\"\n    from django.conf import settings\n    return \"django.contrib.sites\" in settings.INSTALLED_APPS\n",
-        "test_name": "test_is_sites_framework_enabled",
-        "test_lineno": 11,
-        "test_code": "def test_is_sites_framework_enabled():\n    \"\"\"Check the correctness of is_sites_framework_enabled\n    \"\"\"\n    import os\n    os.environ[\"DJANGO_SETTINGS_MODULE\"] = \"plib_runnable.settings\"\n    assert is_sites_framework_enabled() is True\n",
         "level": "plib_runnable"
     },
     {
