@@ -4,6 +4,7 @@ from importlib.machinery import SourceFileLoader
 import os
 import re
 import fnmatch
+import core
 def source_file_filter(file_list, file_type_list):
     """
     Prune the file list for a specific type.
@@ -38,3 +39,4 @@ def test_source_file_filter():
     """
     Check the corretness of source_file_filter
     """
+        

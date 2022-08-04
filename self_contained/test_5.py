@@ -9,10 +9,10 @@ def test_is_none_string():
     """
     Check the corretness of is_none_string
     """
-    assert is_none_string('None')
-    assert is_none_string('none')
-    assert not is_none_string('not none')
-    assert not is_none_string(None)
-    assert not is_none_string('')
-    assert not is_none_string(' ')
+    assert is_none_string('None')==True
+    assert is_none_string('none')==True
+    assert is_none_string('not none')==False
+    assert is_none_string(None)==False
+    assert is_none_string('')==False
+    assert is_none_string(' ')==False
 

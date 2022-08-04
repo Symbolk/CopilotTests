@@ -1,0 +1,101 @@
+[
+    {
+        "file_path": "plib_runnable/test_4.py",
+        "name": "is_ipv4",
+        "docstring": "Test if IPv4 address or not\n    ",
+        "lineno": 23,
+        "code": "def is_ipv4(target):\n    \"\"\" Test if IPv4 address or not\n    \"\"\"\n    try:\n       chk = ipaddress.IPv4Address(target)\n       return True\n    except ipaddress.AddressValueError:\n       return False\n",
+        "test_name": "test_is_ipv4",
+        "test_lineno": 34,
+        "test_code": "def test_is_ipv4():\n    \"\"\"Check the correctness of is_ipv4\n    \"\"\"\n    assert is_ipv4('127.0.0.1') == True\n    assert is_ipv4('127.0.0.256') == False\n    assert is_ipv4('fe80:0000:0001:0000:0440:44ff:1233:5678') == False\n    assert is_ipv4('12.134.25.123') == True\n    assert is_ipv4(' ') == False\n    assert is_ipv4('ipv4') == False",
+        "level": "plib_runnable"
+    },
+    {
+        "file_path": "plib_runnable/test_11.py",
+        "name": "find_roots",
+        "docstring": "Find the roots in some sort of transitive hierarchy.\n\nfind_roots(graph, rdflib.RDFS.subClassOf)\nwill return a set of all roots of the sub-class hierarchy\n\nAssumes triple of the form (child, prop, parent), i.e. the direction of\nRDFS.subClassOf or SKOS.broader",
+        "lineno": 85,
+        "code": "def find_roots(\n    graph: \"Graph\", prop: \"URIRef\", roots: Optional[Set[\"Node\"]] = None\n) -> Set[\"Node\"]:\n    \"\"\"\n    Find the roots in some sort of transitive hierarchy.\n\n    find_roots(graph, rdflib.RDFS.subClassOf)\n    will return a set of all roots of the sub-class hierarchy\n\n    Assumes triple of the form (child, prop, parent), i.e. the direction of\n    RDFS.subClassOf or SKOS.broader\n\n    \"\"\"\n\n    non_roots: Set[Node] = set()\n    if roots is None:\n        roots = set()\n    for x, y in graph.subject_objects(prop):\n        non_roots.add(x)\n        if x in roots:\n            roots.remove(x)\n        if y not in non_roots:\n            roots.add(y)\n    return roots\n",
+        "test_name": "test_find_roots",
+        "test_lineno": 110,
+        "test_code": "def test_find_roots():\n    \"\"\"Check the correctness of find_roots\n    \"\"\"\n    assert find_roots(rdflib.graph.Graph(), rdflib.RDFS.subClassOf) == set()",
+        "level": "plib_runnable"
+    },
+    {
+        "file_path": "plib_runnable/test_1.py",
+        "name": "_dump_string",
+        "docstring": "Dump to a py2-unicode or py3-string",
+        "lineno": 12,
+        "code": "def _dump_string(obj, dumper=None):\n    \"\"\"Dump to a py2-unicode or py3-string\"\"\"\n    if PY3:\n        return yaml.dump(obj, Dumper=dumper)\n    else:\n        return yaml.dump(obj, Dumper=dumper, encoding=None)\n",
+        "test_name": "test__dump_string",
+        "test_lineno": 21,
+        "test_code": "def test__dump_string():\n    \"\"\"Check the correctness of _dump_string\n    \"\"\"\n    assert _dump_string({\"a\": 1, \"b\": 2},dumper=AnsibleDumper) == \"a: 1\\nb: 2\\n\"\n    assert _dump_string({\"a\": 1, \"b\": 2,\"c\":3,},dumper=AnsibleDumper) == \"a: 1\\nb: 2\\nc: 3\\n\"\n    assert _dump_string({\"a\": 1, \"b\": 2,\"d\":3,},dumper=AnsibleDumper) == \"a: 1\\nb: 2\\nd: 3\\n\"\n    assert _dump_string({\"f\": 1, \"b\": 2,\"d\":3,},dumper=AnsibleDumper) == \"b: 2\\nd: 3\\nf: 1\\n\"\n    assert _dump_string({1,2,3},dumper=AnsibleDumper) == \"!!set\\n1: null\\n2: null\\n3: null\\n\"\n    assert _dump_string([1,2,3],dumper=AnsibleDumper) == \"- 1\\n- 2\\n- 3\\n\"",
+        "level": "plib_runnable"
+    },
+    {
+        "file_path": "plib_runnable/test_8.py",
+        "name": "build_app_logger",
+        "docstring": "General purpose application logger. Useful mainly for debugging",
+        "lineno": 9,
+        "code": "def build_app_logger(name='app', logfile='app.log', debug=True):\n    \"\"\"\n    General purpose application logger. Useful mainly for debugging\n    \"\"\"\n    # level = logging.DEBUG if settings.DEBUG else logging.INFO\n    level = logging.INFO\n    \n    logdir = './logs'  # TODO: move this to settings\n    if not os.path.exists(logdir):\n        os.mkdir(logdir)\n    logpath = os.path.join(logdir, logfile)\n    maxBytes = 1024 * 1024 * 10\n    handler = RotatingFileHandler(logpath, maxBytes=maxBytes, backupCount=100)\n    handler.setLevel(level)\n    formatter = logging.Formatter('[%(levelname)s] %(asctime)s: %(message)s')\n    handler.setFormatter(formatter)\n    logger = logging.getLogger(name)\n    logger.addHandler(handler)\n    logger.setLevel(level)\n    return logger\n",
+        "test_name": "test_build_app_logger",
+        "test_lineno": 32,
+        "test_code": "def test_build_app_logger():\n    \"\"\"Check the correctness of build_app_logger\n    \"\"\"\n    \n    app_logger = build_app_logger()\n    assert app_logger.level == logging.INFO\n    assert app_logger.handlers[0].level == logging.INFO\n    assert app_logger.handlers[0].formatter.datefmt == None",
+        "level": "plib_runnable"
+    },
+    {
+        "file_path": "plib_runnable/test_6.py",
+        "name": "make_array",
+        "docstring": "Function to create an array with shape and dtype.\n\nParameters\n----------\nshape : tuple\n    shape of the array to create\ndtype : `numpy.dtype`\n    data-type of the array to create",
+        "lineno": 39,
+        "code": "def make_array(shape, dtype=np.dtype(\"float32\")):\n    \"\"\"\n    Function to create an array with shape and dtype.\n\n    Parameters\n    ----------\n    shape : tuple\n        shape of the array to create\n    dtype : `numpy.dtype`\n        data-type of the array to create\n    \"\"\"\n    return np.zeros(shape, dtype=dtype)\n",
+        "test_name": "test_make_array",
+        "test_lineno": 54,
+        "test_code": "def test_make_array():\n    \"\"\"Check the correctness of make_array\n    \"\"\"\n    assert make_array((3,4)).shape == (3,4)\n    assert make_array((3,4), dtype=np.dtype(\"float64\")).dtype == np.dtype(\"float64\")\n    assert make_array((3,4), dtype=np.dtype(\"float64\")).shape == (3,4)\n    assert make_array((3,4), dtype=np.dtype(\"float64\"))[0][0]== 0\n    assert make_array((3,4), dtype=np.dtype(\"float64\"))[-1][-1]== 0",
+        "level": "plib_runnable"
+    },
+    {
+        "file_path": "plib_runnable/test_2.py",
+        "name": "gaussian",
+        "docstring": "Gaussian centered around 0.2 with a sigma of 0.1.",
+        "lineno": 6,
+        "code": "def gaussian(x):\n    \"\"\"\n    Gaussian centered around 0.2 with a sigma of 0.1.\n    \"\"\"\n    mu = 0.2\n    sigma = 0.1\n    return np.exp(-(x-mu)**2/sigma**2)\n",
+        "test_name": "test_gaussian",
+        "test_lineno": 18,
+        "test_code": "def test_gaussian():\n    \"\"\"Check the correctness of gaussian\n    \"\"\"\n    assert gaussian(0.1) == np.exp(-(0.1-0.2)**2/0.1**2)\n    assert gaussian(1) == np.exp(-(1-0.2)**2/0.1**2)\n    assert gaussian(-1) == np.exp(-(-1-0.2)**2/0.1**2)\n    assert gaussian(0) == np.exp(-(0.0-0.2)**2/0.1**2)\n    assert gaussian(10) == np.exp(-(10-0.2)**2/0.1**2)",
+        "level": "plib_runnable"
+    },
+    {
+        "file_path": "plib_runnable/test_13.py",
+        "name": "load_configurations",
+        "docstring": "Given a sequence of configuration filenames, load and validate each configuration file. Return\nthe results as a tuple of: dict of configuration filename to corresponding parsed configuration,\nand sequence of logging.LogRecord instances containing any parse errors.",
+        "lineno": 23,
+        "code": "def load_configurations(config_filenames, overrides=None, resolve_env=True):\n    '''\n    Given a sequence of configuration filenames, load and validate each configuration file. Return\n    the results as a tuple of: dict of configuration filename to corresponding parsed configuration,\n    and sequence of logging.LogRecord instances containing any parse errors.\n    '''\n    # Dict mapping from config filename to corresponding parsed config dict.\n    configs = collections.OrderedDict()\n    logs = []\n\n    # Parse and load each configuration file.\n    for config_filename in config_filenames:\n        try:\n            configs[config_filename] = validate.parse_configuration(\n                config_filename, validate.schema_filename(), overrides, resolve_env\n            )\n        except PermissionError:\n            logs.extend(\n                [\n                    logging.makeLogRecord(\n                        dict(\n                            levelno=logging.WARNING,\n                            levelname='WARNING',\n                            msg='{}: Insufficient permissions to read configuration file'.format(\n                                config_filename\n                            ),\n                        )\n                    ),\n                ]\n            )\n        except (ValueError, OSError, validate.Validation_error) as error:\n            logs.extend(\n                [\n                    logging.makeLogRecord(\n                        dict(\n                            levelno=logging.CRITICAL,\n                            levelname='CRITICAL',\n                            msg='{}: Error parsing configuration file'.format(config_filename),\n                        )\n                    ),\n                    logging.makeLogRecord(\n                        dict(levelno=logging.CRITICAL, levelname='CRITICAL', msg=error)\n                    ),\n                ]\n            )\n\n    return (configs, logs)\n",
+        "test_name": "test_load_configurations",
+        "test_lineno": 72,
+        "test_code": "def test_load_configurations():\n    \"\"\"Check the correctness of load_configurations\n    \"\"\"\n    \n    assert load_configurations(['/etc/borgmatic/config'])[0] == collections.OrderedDict()",
+        "level": "plib_runnable"
+    },
+    {
+        "file_path": "plib_runnable/test_3.py",
+        "name": "force_string",
+        "docstring": "This function returns the bytes object corresponding to ``obj``\nin case it is a string using UTF-8. ",
+        "lineno": 38,
+        "code": "def force_string(obj):\n    \"\"\"\n    This function returns the bytes object corresponding to ``obj``\n    in case it is a string using UTF-8. \n    \"\"\"\n    if isinstance(obj,numpy.bytes_)==True or isinstance(obj,bytes)==True:\n        return obj.decode('utf-8')\n    return obj\n",
+        "test_name": "test_force_string",
+        "test_lineno": 50,
+        "test_code": "def test_force_string():\n    \"\"\"Check the correctness of force_string\n    \"\"\"\n    assert force_string(b'abc') == 'abc'\n    assert force_string('abc') == 'abc'\n    assert force_string(b'abcd') == 'abcd'\n    assert force_string(numpy.bytes_(b'abc')) == 'abc'\n    assert force_string(numpy.bytes_('abcd')) == 'abcd'\n",
+        "level": "plib_runnable"
+    },
+    {
+        "file_path": "plib_runnable/test_7.py",
+        "name": "validate_string",
+        "docstring": "Verify a value is a string.\n\nCheck if the value is a string, if so, return the value as is or None.\n\nArgs:\n    value: Value to check.\n\nReturns:\n    Value is string or None.\n\nRaises:\n    ValueError",
+        "lineno": 23,
+        "code": "def validate_string(value):\n    \"\"\"\n    Verify a value is a string.\n\n    Check if the value is a string, if so, return the value as is or None.\n\n    Args:\n        value: Value to check.\n\n    Returns:\n        Value is string or None.\n\n    Raises:\n        ValueError\n    \"\"\"\n\n    if value is not None:\n        # Convert to bool\n        if not is_string(value):\n            raise ValueError('\"{}\" must be a string.'.format(value))\n    return value\n",
+        "test_name": "test_validate_string",
+        "test_lineno": 49,
+        "test_code": "def test_validate_string():\n    \"\"\"Check the correctness of validate_string\n    \"\"\"\n    assert validate_string('test') == 'test'\n    assert validate_string(None) == None\n    assert validate_string(b'123') == b'123'",
+        "level": "plib_runnable"
+    }
+]
